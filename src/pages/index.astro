@@ -33,7 +33,7 @@ export const prerender = false;
 	x-data="{ min: 0, max: 1, sidebar: 0, loaded: false }"
 	x-init="setTimeout(() => loaded = true, 100)"
 >
-	<div class="relative min-h-full bg-sky-950 flex flex-row gap-3 place-content-center">
+	<div class="overflow-hidden relative h-svh bg-sky-950 flex flex-row gap-3 place-content-center">
 		<button
 			x-cloak
 			@click="sidebar--"
