@@ -9,8 +9,11 @@ FROM base AS prod
 WORKDIR /app
 COPY pnpm-lock.yaml /app
 RUN pnpm fetch --prod
+COPY package.json /app
+RUN pnpm install --prod
 
 COPY . /app
+RUN pnpm approve-builds esbuild sharp
 RUN pnpm run build
 
 FROM base
