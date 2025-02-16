@@ -1,5 +1,9 @@
 ---
+import type { HTMLAttributes } from "astro/types";
 import "../styles/global.css";
+
+type Props = HTMLAttributes<"body">;
+const props = Astro.props;
 ---
 
 <!doctype html>
@@ -18,7 +22,7 @@ import "../styles/global.css";
 			rel="stylesheet"
 		/>
 	</head>
-	<body>
+	<body {...props}>
 		<slot />
 	</body>
 </html>

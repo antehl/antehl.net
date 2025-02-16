@@ -11,6 +11,20 @@
 	@apply font-rubik;
 }
 
-.highlight {
-	@apply font-[inherit] p-0.5 bg-red-400 text-amber-100;
+@layer utilities {
+	.highlight {
+		@apply font-[inherit] p-0.5 bg-red-400 text-amber-100;
+	}
+
+	.no-scrollbar::-webkit-scrollbar {
+		display: none;
+	}
+	.no-scrollbar {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+}
+
+[x-cloak] {
+	display: none;
 }
