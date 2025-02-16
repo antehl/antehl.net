@@ -1,0 +1,105 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Stars from "../components/Stars.astro";
+import { TZDate, tzOffset } from "@date-fns/tz";
+import { format } from "date-fns";
+
+const links = [
+	// title -- /icons/{}.svg -- url
+	["this site (hi)", null, "antehl.net"],
+	// ["twitter", "twitter", "twitter.com/antehll"],
+	["bluesky", "bluesky", "bsky.app/profile/antehl"],
+	["last.fm", "last-fm", "linktr.ee/antehl"],
+	["youtube", "youtube", "youtube.com/@antehll"],
+	["tiktok", "tiktok", "tiktok.com/@antehl"],
+	["github", "github", "github.com/antehl"],
+	["soundcloud", "soundcloud", "soundcloud.com/antehl"],
+	["fan bandcamp", "bandcamp", "bandcamp.com/antehl"],
+	["playlist", "spotify", "open.spotify.com/playlist/7Jb13np9c7W8Rjxted8ypc"],
+	["mc server", "minecraft", "dupe.world"],
+	["important", null, "cat.kill.li"],
+];
+
+const now = new Date();
+const utcOffset = tzOffset("Europe/Oslo", now) / 60;
+const date = new TZDate(now, "Europe/Oslo");
+---
+
+<Layout>
+	<div class="min-h-full p-8 bg-sky-950 grid place-content-center">
+		<div
+			class="flex flex-col gap-4 bg-amber-100 rounded bg-opacity-10 text-sky-900 py-4 *:px-12 *:flex *:flex-col *:gap-4 *:max-w-[90vw] *:w-124"
+		>
+			<h1 class="bg-red-400 font-semibold font-darumadrop text-2xl pb-[0.25ch] text-amber-100">
+				hi :) i am antehl
+			</h1>
+			<div>
+				<div class="border-red-400 overflow-hidden flex flex-row">
+					<div class="bg-red-400 p-2 rounded-l-xl">
+						<img src="/pfp.png" class="w-24 rounded-full" />
+					</div>
+					<div
+						class="p-2 border-4 border-l-0 rounded-r-xl border-red-400 basis-full font-nanum text-2xl/6"
+					>
+						welcome to website this is my website hello
+					</div>
+				</div>
+			</div>
+			<div>
+				<p>i made this website and i don't know what to put on it.</p>
+				<p>
+					i am born in <span class="highlight">2004</span>. i live in <span class="highlight"
+						>Norway</span
+					>, and the time is currently
+					<span class="highlight">{format(date, "HH:mm")} / {format(date, "hh:mm a")}</span>
+					(<span
+						tabindex="0"
+						class="highlight underline decoration-dotted decoration-2 decoration-amber-100 group relative"
+						>UTC+{utcOffset}<span
+							class="hidden group group-hover:block group-focus:block absolute top-0 w-50 left-6/12 -translate-x-6/12 -translate-y-full bg-sky-900 py-1 px-2 rounded text-amber-100"
+						>
+							UTC offset is dependent on <a
+								href="https://www.timeanddate.com/time/change/norway"
+								class="underline">daylight savings</a
+							>
+						</span></span
+					>).
+				</p>
+				<Stars />
+			</div>
+			<h2 class="bg-red-400 font-semibold font-darumadrop text-2xl pb-[0.25ch] text-amber-100">
+				links
+			</h2>
+			<div>
+				<ul class="grid grid-cols-2 gap-4">
+					{
+						links.map(([name, svgPath, link]) => (
+							<li>
+								<a
+									class="overflow-hidden flex items-center gap-2 bg-red-400 text-amber-100 px-3 py-1 rounded focus:scale-105 hover:scale-105 focus:rotate-1 hover:rotate-1 duration-200 ease-[cubic-bezier(0,0.75,0.5,3)] focus:duration-100 hover:duration-100 focus::ease-[cubic-bezier(0,2,0.5,5)] hover:ease-[cubic-bezier(0,2,0.5,5)]"
+									href={`https://${link}`}
+								>
+									<img
+										class="not-sm:hidden size-8 shrink-0 aspect-square scale-200 -translate-x-20 -translate-y-14 drop-shadow-[2rem_2rem_0_var(--color-amber-100)]"
+										src={`/icons/${svgPath ?? "default"}.svg`}
+									/>
+									<span class="flex flex-col overflow-ellipsis overflow-hidden">
+										<span class="font-darumadrop text-xl -mt-0.5">{name}</span>
+										<span class="text-sm opacity-75 overflow-ellipsis overflow-hidden">{link}</span>
+									</span>
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+			<h2 class="bg-red-400 font-semibold font-darumadrop text-2xl pb-[0.25ch] text-amber-100">
+				more words
+			</h2>
+			<div>
+				<p>this site doesn't have very much information so enjoy this paragraph of text..</p>
+				<p>copyright uhh something 2025</p>
+			</div>
+		</div>
+	</div>
+</Layout>
