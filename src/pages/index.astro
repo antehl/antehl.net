@@ -111,8 +111,12 @@ export const prerender = false;
 										src={`/icons/${svgPath ?? "default"}.svg`}
 									/>
 									<span class="flex flex-col overflow-ellipsis overflow-hidden">
-										<span class="font-darumadrop text-xl -mt-0.5">{name}</span>
-										<span class="text-sm opacity-75 overflow-ellipsis overflow-hidden">{link}</span>
+										<span class="font-darumadrop text-xl -mt-0.5 break-all overflow-ellipsis line-clamp-1 overflow-hidden">
+											{name}
+										</span>
+										<span class="text-sm opacity-75 overflow-ellipsis line-clamp-1 overflow-hidden">
+											{link}
+										</span>
 									</span>
 								</a>
 							</li>
