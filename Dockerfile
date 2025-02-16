@@ -1,5 +1,6 @@
 FROM node:lts-slim AS base
 
+WORKDIR /app
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
@@ -20,6 +21,7 @@ FROM base
 COPY --from=prod /app/node_modules /app/node_modules
 COPY --from=prod /app/dist /app/dist
 
-FROM httpd:2.4 AS runtime
-COPY --from=prod /app/dist /usr/local/apache2/htdocs/
-EXPOSE 80
+ENV HOST=0.0.0.0
+ENV PORT=4321
+EXPOSE 4321
+CMD node ./dist/server/entry.mjs

@@ -23,6 +23,8 @@ const links = [
 const now = new Date();
 const utcOffset = tzOffset("Europe/Oslo", now) / 60;
 const date = new TZDate(now, "Europe/Oslo");
+
+export const prerender = false;
 ---
 
 <Layout>
