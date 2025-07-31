@@ -27,17 +27,19 @@ const date = new TZDate(now, "Europe/Oslo");
 ---
 
 <Layout
-	class="bg-sky-950"
+	class="bg-ourple"
 	x-data="{ min: 0, max: 1, sidebar: 0, loaded: false }"
 	x-init="setTimeout(() => loaded = true, 100)"
 >
-	<div class="overflow-hidden relative h-svh bg-sky-950 flex flex-row gap-3 place-content-center">
+	<div
+		class="overflow-hidden relative h-svh bg-[url(/bg-pattern.png)] flex flex-row gap-3 place-content-center [image-rendering:pixelated]"
+	>
 		<button
 			x-cloak
 			@click="sidebar--"
 			:class="{ '-translate-x-full invisible': sidebar <= min }"
 			:disabled="sidebar <= min"
-			class="duration-200 border-4 border-sky-950 border-l-0 z-20 cursor-pointer lg:hidden absolute top-[50%] -translate-y-[50%] left-0 w-8 h-16 rounded-r-lg text-3xl/6 pb-2 font-darumadrop text-amber-100 bg-red-400 grid place-content-center"
+			class="duration-200 border-4 border-ourple border-l-0 z-20 cursor-pointer lg:hidden absolute top-[50%] -translate-y-[50%] left-0 w-8 h-16 rounded-r-lg text-3xl/6 pb-2 font-darumadrop text-whitest bg-red grid place-content-center"
 		>
 			{">"}
 		</button>
@@ -46,15 +48,15 @@ const date = new TZDate(now, "Europe/Oslo");
 			@click="sidebar++"
 			:class="{ 'translate-x-full invisible': sidebar >= max }"
 			:disabled="sidebar >= max"
-			class="duration-200 border-4 border-sky-950 border-r-0 z-20 cursor-pointer lg:hidden absolute top-[50%] -translate-y-[50%] right-0 w-8 h-16 rounded-l-lg text-3xl/6 pb-2 font-darumadrop text-amber-100 bg-red-400 grid place-content-center"
+			class="duration-200 border-4 border-ourple border-r-0 z-20 cursor-pointer lg:hidden absolute top-[50%] -translate-y-[50%] right-0 w-8 h-16 rounded-l-lg text-3xl/6 pb-2 font-darumadrop text-whitest bg-red grid place-content-center"
 		>
 			{"<"}
 		</button>
 
 		<!-- <div
-			class="flex flex-col gap-4 bg-amber-100 rounded bg-opacity-10 text-sky-900 py-4 *:px-12 *:flex *:flex-col *:gap-4 *:max-w-[90vw] *:w-124"
+			class="flex flex-col gap-4 bg-ourple rounded bg-opacity-10 text-offwhite py-4 *:px-12 *:flex *:flex-col *:gap-4 *:max-w-[90vw] *:w-124"
 		>
-			<h1 class="bg-red-400 font-semibold font-darumadrop text-2xl pb-[0.25ch] text-amber-100">
+			<h1 class="bg-red font-semibold font-darumadrop text-2xl pb-[0.25ch] text-whitest">
 				changelog
 			</h1>
 			<p>this website was created</p>
@@ -62,16 +64,18 @@ const date = new TZDate(now, "Europe/Oslo");
 
 		<Tile index={0}>
 			<TileSection first title="hi :) i am antehl">
-				<figure class="relative border-red-400 overflow-hidden flex flex-row font-nanum text-2xl/6">
-					<div class="bg-red-400 p-2 rounded-l-xl">
-						<img alt="profile picture" src="/pfp.png" class="w-24 rounded-full" />
-					</div>
-					<blockquote class="p-2 border-4 border-l-0 rounded-r-xl border-red-400 basis-full">
+				<figure class="relative border-red overflow-hidden flex flex-row font-nanum text-2xl/6">
+					<img
+						alt="profile picture"
+						src="/pfp.png"
+						class="w-24 rounded-l-xl [image-rendering:pixelated]"
+					/>
+					<blockquote class="p-2 border-4 border-l-0 rounded-r-xl border-red basis-full">
 						welcome to website this is my website hello
 					</blockquote>
 					<figcaption class="absolute bottom-2 right-4">— me</figcaption>
 				</figure>
-				<p>i made this website and i don't know what to put on it.</p>
+				<p>i made this website and i don't know what to put on it</p>
 				<p>
 					i was invented in <span class="highlight">Norway</span> during the year <span
 						class="highlight">2004</span
@@ -79,9 +83,9 @@ const date = new TZDate(now, "Europe/Oslo");
 					<span class="highlight">{format(date, "HH:mm")} / {format(date, "h:mm a")}</span>
 					(<span
 						tabindex="0"
-						class="highlight underline decoration-dotted decoration-2 decoration-amber-100 group relative"
+						class="highlight underline decoration-dotted decoration-2 decoration-whitest group relative"
 						>UTC+{utcOffset}<span
-							class="hidden group group-hover:block group-focus:block absolute top-0 w-50 left-6/12 -translate-x-6/12 -translate-y-full bg-sky-900 py-1 px-2 rounded text-amber-100"
+							class="hidden group group-hover:block group-focus:block absolute top-0 w-50 left-6/12 -translate-x-6/12 -translate-y-full bg-offwhite py-1 px-2 rounded text-whitest"
 						>
 							UTC offset is dependent on <a
 								href="https://www.timeanddate.com/time/change/norway"
@@ -89,7 +93,7 @@ const date = new TZDate(now, "Europe/Oslo");
 								class="underline">daylight savings</a
 							>
 						</span></span
-					>).
+					>)
 				</p>
 				<Stars />
 			</TileSection>
@@ -99,12 +103,12 @@ const date = new TZDate(now, "Europe/Oslo");
 						links.map(([name, svgPath, link]) => (
 							<li>
 								<a
-									class="overflow-hidden flex items-center gap-2 bg-red-400 text-amber-100 px-3 py-1 rounded focus:scale-105 hover:scale-105 focus:rotate-1 hover:rotate-1 duration-200 ease-[cubic-bezier(0,0.75,0.5,3)] focus:duration-100 hover:duration-100 focus::ease-[cubic-bezier(0,2,0.5,5)] hover:ease-[cubic-bezier(0,2,0.5,5)]"
+									class="overflow-hidden flex items-center gap-2 bg-red text-whitest px-3 py-1 rounded focus:scale-105 hover:scale-105 focus:rotate-1 hover:rotate-1 duration-200 ease-[cubic-bezier(0,0.75,0.5,3)] focus:duration-100 hover:duration-100 focus::ease-[cubic-bezier(0,2,0.5,5)] hover:ease-[cubic-bezier(0,2,0.5,5)]"
 									href={`https://${link}`}
 									target="_blank"
 								>
 									<img
-										class="not-sm:hidden size-8 shrink-0 aspect-square scale-200 -translate-x-20 -translate-y-14 drop-shadow-[2rem_2rem_0_var(--color-amber-100)]"
+										class="not-sm:hidden size-8 shrink-0 aspect-square scale-200 -translate-x-20 -translate-y-14 drop-shadow-[2rem_2rem_0_var(--color-ourple)]"
 										alt={`icon for ${name}`}
 										src={`/icons/${svgPath ?? "default"}.svg`}
 									/>

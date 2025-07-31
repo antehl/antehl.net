@@ -11,7 +11,7 @@ const { index, class: classes, ...rest } = Astro.props;
 	class={`ease-in-out not-lg:absolute h-svh overflow-y-scroll no-scrollbar scroll-mb-0 py-8 ${classes ?? ""}`}
 	{...rest}
 >
-	<div class="flex flex-col gap-4 bg-amber-100 rounded bg-opacity-10 text-sky-900 pb-4">
+	<div class="flex flex-col gap-4 bg-black/25 backdrop-blur-sm rounded text-offwhite pb-4">
 		<slot />
 	</div>
 </div>

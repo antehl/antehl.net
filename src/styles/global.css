@@ -5,6 +5,11 @@
 	--font-rubik: Rubik, sans-serif;
 	--font-pangolin: "Pangolin", sans-serif;
 	--font-nanum: "Nanum Pen Script", sans-serif;
+
+	--color-red: #ff003f;
+	--color-ourple: #260026;
+	--color-offwhite: #bfbfbf;
+	--color-whitest: #ffffff;
 }
 
 :root {
@@ -13,7 +18,7 @@
 
 @layer utilities {
 	.highlight {
-		@apply font-[inherit] p-0.5 bg-red-400 text-amber-100;
+		@apply font-[inherit] p-0.5 bg-red text-whitest;
 	}
 
 	.no-scrollbar::-webkit-scrollbar {
