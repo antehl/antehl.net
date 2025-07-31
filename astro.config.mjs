@@ -14,10 +14,13 @@ export default defineConfig({
 		mode: "standalone",
 	}),
 	integrations: [alpinejs(), db()],
-	server: {
-		headers: {
-			"Access-Control-Allow-Origin": "https://antehl.net",
-		},
+	// server: {
+	// 	headers: {
+	// 		"Access-Control-Allow-Origin": "https://antehl.net",
+	// 	},
+	// },
+	security: {
+		checkOrigin: false,
 	},
 	output: "server",
 });
