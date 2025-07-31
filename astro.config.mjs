@@ -14,5 +14,10 @@ export default defineConfig({
 		mode: "standalone",
 	}),
 	integrations: [alpinejs(), db()],
+	server: {
+		headers: {
+			"Access-Control-Allow-Origin": "https://antehl.net",
+		},
+	},
 	output: "server",
 });
