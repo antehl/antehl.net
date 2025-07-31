@@ -5,6 +5,7 @@ import { TZDate, tzOffset } from "@date-fns/tz";
 import { format } from "date-fns";
 import Tile from "../components/Tile.astro";
 import TileSection from "../components/TileSection.astro";
+import Comments from "../components/api/Comments.astro";
 
 const links = [
 	// title -- /icons/{}.svg -- url
@@ -133,11 +134,53 @@ const date = new TZDate(now, "Europe/Oslo");
 		</Tile>
 		<Tile index={1}>
 			<TileSection first title="comments">
-				<!-- <form>
-					<textarea hx-post="/api/post-comment"></textarea>
-				</form> -->
+				<script>
+					const form = document.querySelector("#comment_form") as HTMLFormElement;
+					const author = form.elements.namedItem("author") as HTMLInputElement;
+					const body = form.elements.namedItem("body") as HTMLTextAreaElement;
+					const submitButton = form.elements.namedItem("submit") as HTMLButtonElement;
 
-				<p>todo</p>
+					form.addEventListener("input", () => {
+						const valid = author.value.trim().length >= 1 && body.value.trim().length >= 4;
+						if (valid) submitButton.removeAttribute("disabled");
+						else submitButton.setAttribute("disabled", "");
+					});
+				</script>
+				<form
+					hx-post="/api/post_comment"
+					hx-target="#comments"
+					hx-swap="innerHTML"
+					class="flex flex-col items-start"
+					id="comment_form"
+				>
+					<label class="w-full">
+						your name:
+						<input
+							name="author"
+							type="text"
+							maxlength="32"
+							class="bg-black/25 border-2 border-red p-2 rounded w-full"
+						/>
+					</label>
+					<label class="w-full">
+						message:
+						<textarea
+							name="body"
+							maxlength="256"
+							class="bg-black/25 border-2 border-red p-2 rounded resize-none w-full"
+							rows={3}></textarea>
+					</label>
+					<button
+						name="submit"
+						type="submit"
+						disabled
+						class="disabled:opacity-25 rounded bg-red border-none px-4 py-2 text-whitest cursor-pointer disabled"
+						>send</button
+					>
+				</form>
+				<div id="comments">
+					<Comments />
+				</div>
 			</TileSection>
 		</Tile>
 	</div>

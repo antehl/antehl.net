@@ -1,0 +1,35 @@
+---
+export const partial = true;
+
+import { db, comment, count, eq, and, gte } from "astro:db";
+import { z } from "astro/zod";
+import { parseFormData } from "../../utils";
+import Comments from "../../components/api/Comments.astro";
+import { startOfToday, subSeconds } from "date-fns";
+
+if (Astro.request.method !== "POST")
+	return new Response(null, { status: 405, statusText: "Method Not Allowed" });
+
+const previousComments = await db
+	.select({ count: count(), created_at: comment.created_at })
+	.from(comment)
+	.where(and(eq(comment.author_ip, Astro.clientAddress), gte(comment.created_at, startOfToday())));
+
+if (previousComments[0].count >= 3) return new Response(null, { status: 429 });
+
+const form = parseFormData(
+	await Astro.request.formData(),
+	z.object({ author: z.string().trim().min(1).max(32), body: z.string().trim().min(1).max(256) })
+);
+if (!form.success) return new Response(null, { status: 422 });
+
+const returned = await db
+	.insert(comment)
+	.values({ author: form.data.author, body: form.data.body, author_ip: Astro.clientAddress })
+	.returning({ author: comment.author, body: comment.body })
+	.then((x) => x[0]);
+
+if (!returned) return new Response(null, { status: 500, statusText: "Internal Server Error" });
+---
+
+<Comments />

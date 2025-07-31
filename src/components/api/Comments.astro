@@ -1,0 +1,34 @@
+---
+import { db, comment, desc } from "astro:db";
+import { formatDistanceToNow } from "date-fns";
+
+const comments = await db
+	.select({
+		id: comment.id,
+		author: comment.author,
+		body: comment.body,
+		created_at: comment.created_at,
+	})
+	.from(comment)
+	.orderBy(desc(comment.created_at))
+	.limit(26);
+---
+
+<ul class="flex flex-col gap-2">
+	{
+		comments.slice(0, 25).map(({ author, body, created_at }) => (
+			<li class="overflow-hidden">
+				<p class="border-l-2 border-l-red pl-2 text-whitest overflow-ellipsis overflow-hidden">
+					{body}
+				</p>
+				<p class="italic hyphens-auto whitespace-nowrap flex gap-1.5">
+					<span aria-hidden>-</span>
+					<span class="overflow-ellipsis overflow-hidden">{author}</span>
+					<span aria-hidden>·</span>
+					<span>{formatDistanceToNow(created_at)} ago</span>
+				</p>
+			</li>
+		))
+	}
+	{comments.length > 25 && <p class="italic">... older comments hidden</p>}
+</ul>
