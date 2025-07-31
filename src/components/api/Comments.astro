@@ -1,4 +1,5 @@
 ---
+import { eq } from "astro:db";
 import { db, comment, desc } from "astro:db";
 import { formatDistanceToNow } from "date-fns";
 
@@ -8,15 +9,16 @@ const comments = await db
 		author: comment.author,
 		body: comment.body,
 		created_at: comment.created_at,
+		owns_comment: eq(comment.author_ip, Astro.clientAddress),
 	})
 	.from(comment)
 	.orderBy(desc(comment.created_at))
 	.limit(26);
 ---
 
-<ul class="flex flex-col gap-2">
+<ul class="flex flex-col gap-4">
 	{
-		comments.slice(0, 25).map(({ author, body, created_at }) => (
+		comments.slice(0, 25).map(({ id, author, body, created_at, owns_comment }) => (
 			<li class="overflow-hidden">
 				<p class="border-l-2 border-l-red pl-2 text-whitest overflow-ellipsis overflow-hidden">
 					{body}
@@ -27,6 +29,17 @@ const comments = await db
 					<span aria-hidden>·</span>
 					<span>{formatDistanceToNow(created_at)} ago</span>
 				</p>
+				{!!owns_comment && (
+					<button
+						class="bg-red px-4 py-2 text-whitest rounded cursor-pointer"
+						hx-post="/api/delete_comment"
+						hx-vals={JSON.stringify({ comment_id: id })}
+						hx-target="#comments"
+						hx-swap="innerHTML"
+					>
+						delete
+					</button>
+				)}
 			</li>
 		))
 	}

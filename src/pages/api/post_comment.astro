@@ -1,21 +1,21 @@
 ---
 export const partial = true;
 
-import { db, comment, count, eq, and, gte } from "astro:db";
+import { db, comment, count, eq } from "astro:db";
 import { z } from "astro/zod";
 import { parseFormData } from "../../utils";
 import Comments from "../../components/api/Comments.astro";
-import { startOfToday, subSeconds } from "date-fns";
 
 if (Astro.request.method !== "POST")
 	return new Response(null, { status: 405, statusText: "Method Not Allowed" });
 
 const previousComments = await db
-	.select({ count: count(), created_at: comment.created_at })
+	.select({ count: count() })
 	.from(comment)
-	.where(and(eq(comment.author_ip, Astro.clientAddress), gte(comment.created_at, startOfToday())));
+	.where(eq(comment.author_ip, Astro.clientAddress))
+	.then((x) => x[0].count);
 
-if (previousComments[0].count >= 3) return new Response(null, { status: 429 });
+if (previousComments > 0) return new Response(null, { status: 429 });
 
 const form = parseFormData(
 	await Astro.request.formData(),

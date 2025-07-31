@@ -1,0 +1,35 @@
+---
+export const partial = true;
+
+import { db, comment, count, eq } from "astro:db";
+import { z } from "astro/zod";
+import { parseFormData } from "../../utils";
+import Comments from "../../components/api/Comments.astro";
+
+if (Astro.request.method !== "POST")
+	return new Response(null, { status: 405, statusText: "Method Not Allowed" });
+
+const form = parseFormData(
+	await Astro.request.formData(),
+	z.object({ comment_id: z.string().regex(/^\d+$/) })
+);
+if (!form.success) return new Response(null, { status: 422 });
+
+const formCommentId = Number(form.data.comment_id);
+
+const previousComment = await db
+	.select({ author_ip: comment.author_ip })
+	.from(comment)
+	.where(eq(comment.id, formCommentId))
+	.then((x) => x[0]);
+
+if (!previousComment) return new Response(null, { status: 404 });
+if (previousComment.author_ip !== Astro.clientAddress) return new Response(null, { status: 403 });
+
+const returned = await db.delete(comment).where(eq(comment.id, formCommentId));
+
+if (returned.rowsAffected === 0)
+	return new Response(null, { status: 500, statusText: "Internal Server Error" });
+---
+
+<Comments />
