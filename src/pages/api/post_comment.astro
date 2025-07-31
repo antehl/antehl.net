@@ -13,6 +13,7 @@ const previousComments = await db
 	.select({ count: count() })
 	.from(comment)
 	.where(eq(comment.author_ip, Astro.clientAddress))
+	.limit(25)
 	.then((x) => x[0].count);
 
 if (previousComments > 0) return new Response(null, { status: 429 });
