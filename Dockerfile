@@ -15,7 +15,6 @@ RUN pnpm install --prod
 
 COPY . /app
 RUN pnpm approve-builds esbuild sharp
-ENV ASTRO_DB_REMOTE_URL=file:./data/database.db
 RUN pnpm run build --remote
 
 FROM base

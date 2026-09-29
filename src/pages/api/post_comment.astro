@@ -1,13 +1,12 @@
 ---
 export const partial = true;
 
-import { db, comment, count, eq } from "astro:db";
 import { z } from "astro/zod";
-import { parseFormData } from "../../utils";
 import Comments from "../../components/api/Comments.astro";
-
-if (Astro.request.method !== "POST")
-	return new Response(null, { status: 405, statusText: "Method Not Allowed" });
+import { db } from "../..";
+import { count, eq } from "drizzle-orm";
+import { comment } from "../../db/schema";
+import { assertRequest } from "../../utils";
 
 const previousComments = await db
 	.select({ count: count() })
@@ -18,15 +17,14 @@ const previousComments = await db
 
 if (previousComments > 0) return new Response(null, { status: 429 });
 
-const form = parseFormData(
-	await Astro.request.formData(),
-	z.object({ author: z.string().trim().min(1).max(32), body: z.string().trim().min(1).max(256) })
-);
-if (!form.success) return new Response(null, { status: 422 });
+const args = await assertRequest(Astro.request, "POST", {
+	author: z.string().trim().min(1).max(32),
+	body: z.string().trim().min(1).max(256),
+});
 
 const returned = await db
 	.insert(comment)
-	.values({ author: form.data.author, body: form.data.body, author_ip: Astro.clientAddress })
+	.values({ author: args.author, body: args.body, author_ip: Astro.clientAddress })
 	.returning({ author: comment.author, body: comment.body })
 	.then((x) => x[0]);
 

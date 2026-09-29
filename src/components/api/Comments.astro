@@ -1,7 +1,8 @@
 ---
-import { eq } from "astro:db";
-import { db, comment, desc } from "astro:db";
 import { formatDistanceToNow } from "date-fns";
+import { db } from "../..";
+import { comment } from "../../db/schema";
+import { desc, eq } from "drizzle-orm";
 
 const comments = await db
 	.select({
