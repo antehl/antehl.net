@@ -13,13 +13,12 @@ const comments = await db
 		owns_comment: eq(comment.author_ip, Astro.clientAddress),
 	})
 	.from(comment)
-	.orderBy(desc(comment.created_at))
-	.limit(26);
+	.orderBy(desc(comment.created_at));
 ---
 
 <ul class="flex flex-col gap-4">
 	{
-		comments.slice(0, 25).map(({ id, author, body, created_at, owns_comment }) => (
+		comments.map(({ id, author, body, created_at, owns_comment }) => (
 			<li class="overflow-hidden">
 				<p class="border-l-2 border-l-red pl-2 text-whitest overflow-ellipsis overflow-hidden">
 					{body}
@@ -44,5 +43,4 @@ const comments = await db
 			</li>
 		))
 	}
-	{comments.length > 25 && <p class="italic">... older comments hidden</p>}
 </ul>
