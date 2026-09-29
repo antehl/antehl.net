@@ -4,18 +4,23 @@ export const partial = true;
 import { z } from "astro/zod";
 import Comments from "../../components/api/Comments.astro";
 import { db } from "../..";
-import { count, eq } from "drizzle-orm";
+import { and, count, eq, gt, sql } from "drizzle-orm";
 import { comment } from "../../db/schema";
 import { assertRequest } from "../../utils";
 
-const previousComments = await db
+const hasCommented = await db
 	.select({ count: count() })
 	.from(comment)
-	.where(eq(comment.author_ip, Astro.clientAddress))
-	.limit(25)
-	.then((x) => x[0].count);
+	.where(
+		and(
+			eq(comment.author_ip, Astro.clientAddress),
+			gt(comment.created_at, sql`datetime('now', '-1 day')`),
+		),
+	)
+	.limit(1)
+	.then((x) => Boolean(x[0].count));
 
-if (previousComments > 0) return new Response(null, { status: 429 });
+if (hasCommented) return new Response(null, { status: 429 });
 
 const args = await assertRequest(Astro.request, "POST", {
 	author: z.string().trim().min(1).max(32),
