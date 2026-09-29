@@ -8,7 +8,7 @@ RUN corepack enable
 FROM base AS prod
 
 WORKDIR /app
-COPY pnpm-lock.yaml /app
+COPY pnpm-lock.yaml pnpm-workspace.yaml /app/
 RUN pnpm fetch --prod
 COPY package.json /app
 RUN pnpm install --prod
